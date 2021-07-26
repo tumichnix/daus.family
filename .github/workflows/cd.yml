@@ -1,0 +1,29 @@
+name: 🚀 Deploy website
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v2
+    
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      with:
+        server: ${{ secrets.FTP_HOST }}
+        username: ${{ secrets.FTP_USER }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        protocol: ftps
+        port: ${{ secrets.FTP_PORT }}
+        local-dir: ./public/
+        server-dir: ${{ secrets.FTP_SERVER_DIR }}
+        state-name: ${{ secrets.FTP_STATE_NAME }}
